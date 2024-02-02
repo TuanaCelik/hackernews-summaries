@@ -4,3 +4,4 @@ markdown
 python-dotenv
 newspaper3k
 st-annotated-text
+transformers

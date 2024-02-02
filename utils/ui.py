@@ -48,7 +48,7 @@ def sidebar():
         st.markdown(
             "## How this works\n"
             "This app was built with [Haystack 2.0-Beta](https://haystack.deepset.ai) using the"
-            " [`HuggingFaceTGIGenerator`](https://docs.haystack.deepset.ai/v2.0/docs/hugginfacetgigenerator and [`PromptBuilder`](https://docs.haystack.deepset.ai/v2.0/docs/promptbuilder).\n\n"
+            " [`HuggingFaceTGIGenerator`](https://docs.haystack.deepset.ai/v2.0/docs/huggingfacetgigenerator) and [`PromptBuilder`](https://docs.haystack.deepset.ai/v2.0/docs/promptbuilder).\n\n"
             " The source code is also on [GitHub](https://github.com/TuanaCelik/hackernews-summaries)"
             " with instructions to run locally.\n"
             "You can see how the `PromptBuilder` was set up [here](https://github.com/TuanaCelik/hackernews-summaries/blob/main/utils/haystack.py)")
