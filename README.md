@@ -1,8 +1,8 @@
 ---
 title: Should I follow?
 emoji: 🧡
-colorFrom: orange
-colorTo: yellow
+colorFrom: yellow
+colorTo: green
 sdk: streamlit
 sdk_version: 1.5.0
 app_file: app.py
