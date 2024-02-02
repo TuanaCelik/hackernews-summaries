@@ -1,0 +1,5 @@
+haystack-ai==2.0.0b5
+streamlit==1.25.0
+markdown
+python-dotenv
+newspaper3k
