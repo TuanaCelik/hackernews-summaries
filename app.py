@@ -14,20 +14,24 @@ set_initial_state()
 
 sidebar()
 
+def mistral_pressed():
+    st.session_state["model"] = "Mistral"
+
+def openai_pressed():
+    st.session_state["model"] = "GPT-4"
+
 st.write("# Get the summaries of latest top Hacker News posts 🧡")
 if st.session_state.get("model") == None:
-    mistral, openai = st.columns(2)
+    mistral, openai, _ , _ = st.columns(4, gap="small")
 
     with mistral:
-        mistral_pressed = st.button("Mistral")
-        if mistral_pressed:
-            st.session_state["model"] = "Mistral"
+        st.button("Mistral", on_click=mistral_pressed, type="primary")
+        
     with openai:
-        openai_pressed = st.button("OpenAI")
-        if openai_pressed:
-            st.session_state["model"] = "GPT-4"
+        st.button("OpenAI", on_click=openai_pressed, type="primary")
 
 if st.session_state.get("model") and (st.session_state.get("HF_TGI_TOKEN") or st.session_state.get("OPENAI_API_KEY")):
+    
     if st.session_state.get("HF_TGI_TOKEN"):
         pipeline = start_haystack(st.session_state.get("HF_TGI_TOKEN"), st.session_state.get("model"))
         st.session_state["api_key_configured"] = True
@@ -45,7 +49,7 @@ if st.session_state.get("model") and (st.session_state.get("HF_TGI_TOKEN") or st
         st.write("")
         st.write("")
         run_pressed = st.button("Get summaries")
-else:
+elif st.session_state.get("model"):
     st.write("Please provide your Hugging Face or OpenAI key to start using the application")
     st.write("If you are using a smaller screen, open the sidebar from the top left to provide your token 🙌")
     
