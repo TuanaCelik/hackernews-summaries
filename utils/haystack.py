@@ -1,10 +1,10 @@
 import streamlit as st
 from haystack import Pipeline
 from haystack.components.builders.prompt_builder import PromptBuilder
-from haystack.components.generators import HuggingFaceTGIGenerator
+from haystack.components.generators import HuggingFaceTGIGenerator, OpenAIGenerator
 from .hackernews_fetcher import HackernewsFetcher
 
-def start_haystack(hf_token):
+def start_haystack(key, model):
     prompt_template = """
 You will be provided one or more top HakcerNews posts, followed by their URL.
 For the posts you have, provide a short summary followed by the URL that the post can be found at.
@@ -18,7 +18,10 @@ Summaries:
 """
 
     prompt_builder = PromptBuilder(template=prompt_template)
-    llm = HuggingFaceTGIGenerator("mistralai/Mixtral-8x7B-Instruct-v0.1", token=hf_token)
+    if model == "Mistral":
+        llm = HuggingFaceTGIGenerator("mistralai/Mixtral-8x7B-Instruct-v0.1", token=key)
+    elif model == "GPT-4":
+        llm = OpenAIGenerator(api_key=key, model="gpt-4")
     fetcher = HackernewsFetcher()
 
     pipe = Pipeline()
@@ -34,9 +37,14 @@ Summaries:
 @st.cache_data(show_spinner=True)
 def query(top_k, _pipeline):
     try:
-        replies = _pipeline.run(data={"hackernews_fetcher": {"top_k": top_k}, 
-                                      "llm": {"generation_kwargs": {"max_new_tokens": 600}}
-                                      })
+        run_args = {"hackernews_fetcher": {"top_k": top_k}}
+        
+        if st.session_state.get("model") == "Mistral":
+            run_args = {"hackernews_fetcher": {"top_k": top_k}, 
+                        "llm": {"generation_kwargs": {"max_new_tokens": 600}}
+                        }
+
+        replies = _pipeline.run(data=run_args)
         
         result = replies['llm']['replies']
     except Exception as e:

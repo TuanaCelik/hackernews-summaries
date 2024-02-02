@@ -9,13 +9,17 @@ def set_initial_state():
     set_state_if_absent("top_k", "How many of the top posts would you like a summary for?")
     set_state_if_absent("result", None)
     set_state_if_absent("haystack_started", False)
+    set_state_if_absent("model", None)
 
 def reset_results(*args):
     st.session_state.result = None
     st.session_state.top_k = None
 
-def set_openai_api_key(api_key: str):
+def set_hf_token(api_key: str):
     st.session_state["HF_TGI_TOKEN"] = api_key
+
+def set_openai_key(api_key: str):
+    st.session_state["OPENAI_API_KEY"] = api_key
 
 def sidebar():
     with st.sidebar:
@@ -33,16 +37,28 @@ def sidebar():
             "3. Enjoy 🤗\n"
         )
 
-        api_key_input = st.text_input(
-            "Hugging Face Token",
-            type="password",
-            placeholder="Paste your Hugging Face TGI Token",
-            help="You can get your API key from https://platform.openai.com/account/api-keys.",
-            value=st.session_state.get("HF_TGI_TOKEN", ""),
-        )
-
-        if api_key_input:
-            set_openai_api_key(api_key_input)
+        if st.session_state.model == "Mistral":
+            api_key_input = st.text_input(
+                "Hugging Face Token",
+                type="password",
+                placeholder="Paste your Hugging Face TGI Token",
+                help="You can get your API key from https://platform.openai.com/account/api-keys.",
+                value=st.session_state.get("HF_TGI_TOKEN", ""),
+            )
+            if api_key_input:
+                set_hf_token(api_key_input)
+        
+        elif st.session_state.model == "GPT-4":
+            api_key_input = st.text_input(
+                "OpenAI API Key",
+                type="password",
+                placeholder="Paste your OpenAI API Key",
+                help="You can get your API key from https://platform.openai.com/account/api-keys.",
+                value=st.session_state.get("OPENAI_API_KEY", ""),
+            )
+            if api_key_input:
+                set_openai_key(api_key_input)
+        
 
         st.markdown("---")
         st.markdown(

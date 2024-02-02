@@ -15,10 +15,27 @@ set_initial_state()
 sidebar()
 
 st.write("# Get the summaries of latest top Hacker News posts 🧡")
+if st.session_state.get("model") == None:
+    mistral, openai = st.columns(2)
 
-if st.session_state.get("HF_TGI_TOKEN"):
-    pipeline = start_haystack(st.session_state.get("HF_TGI_TOKEN"))
-    st.session_state["api_key_configured"] = True
+    with mistral:
+        mistral_pressed = st.button("Mistral")
+        if mistral_pressed:
+            st.session_state["model"] = "Mistral"
+    with openai:
+        openai_pressed = st.button("OpenAI")
+        if openai_pressed:
+            st.session_state["model"] = "GPT-4"
+
+if st.session_state.get("model") and (st.session_state.get("HF_TGI_TOKEN") or st.session_state.get("OPENAI_API_KEY")):
+    if st.session_state.get("HF_TGI_TOKEN"):
+        pipeline = start_haystack(st.session_state.get("HF_TGI_TOKEN"), st.session_state.get("model"))
+        st.session_state["api_key_configured"] = True
+    
+    elif st.session_state.get("OPENAI_API_KEY"):
+        pipeline = start_haystack(st.session_state.get("OPENAI_API_KEY"), st.session_state.get("model"))
+        st.session_state["api_key_configured"] = True
+    
     search_bar, button = st.columns(2)
     # Search bar
     with search_bar: 
@@ -29,7 +46,7 @@ if st.session_state.get("HF_TGI_TOKEN"):
         st.write("")
         run_pressed = st.button("Get summaries")
 else:
-    st.write("Please provide your Hugging Face Token to start using the application")
+    st.write("Please provide your Hugging Face or OpenAI key to start using the application")
     st.write("If you are using a smaller screen, open the sidebar from the top left to provide your token 🙌")
     
 if st.session_state.get("api_key_configured"):
