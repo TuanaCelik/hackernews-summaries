@@ -22,13 +22,13 @@ def openai_pressed():
 
 st.write("# Get the summaries of latest top Hacker News posts 🧡")
 if st.session_state.get("model") == None:
-    mistral, openai, _ , _ = st.columns(4, gap="small")
+    mistral, openai = st.columns([2,1], gap="small")
 
     with mistral:
-        st.button("Mistral", on_click=mistral_pressed, type="primary")
+        st.button("Mixtral-8x7B-Instruct", on_click=mistral_pressed, type="primary")
         
     with openai:
-        st.button("OpenAI", on_click=openai_pressed, type="primary")
+        st.button("GPT-4", on_click=openai_pressed, type="primary")
 
 if st.session_state.get("model") and (st.session_state.get("HF_TGI_TOKEN") or st.session_state.get("OPENAI_API_KEY")):
     
