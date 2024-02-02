@@ -1,5 +1,5 @@
 ---
-title: Should I follow?
+title: Hacker News Summaries
 emoji: 🧡
 colorFrom: yellow
 colorTo: green
