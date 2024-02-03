@@ -61,7 +61,7 @@ if st.session_state.get("api_key_configured"):
     # Get results for query
     if run_query and top_k:
         reset_results()
-        st.session_state.username = top_k
+        st.session_state.top_k = top_k
         with st.spinner("🔎"):
             try:
                 st.session_state.result = query(top_k, pipeline)
