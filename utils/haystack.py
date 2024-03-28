@@ -4,6 +4,7 @@ from haystack.components.builders.prompt_builder import PromptBuilder
 from haystack.components.generators import HuggingFaceTGIGenerator, OpenAIGenerator
 from .hackernews_fetcher import HackernewsFetcher
 
+st.cache_resource
 def start_haystack(key, model):
     prompt_template = """
 You will be provided one or more top HakcerNews posts, followed by their URL.
@@ -19,7 +20,7 @@ Summaries:
 
     prompt_builder = PromptBuilder(template=prompt_template)
     if model == "Mistral":
-        llm = HuggingFaceTGIGenerator("mistralai/Mixtral-8x7B-Instruct-v0.1", token=key)
+        llm = HuggingFaceTGIGenerator("mistralai/Mistral-7B-Instruct-v0.2", token=key)
     elif model == "GPT-4":
         llm = OpenAIGenerator(api_key=key, model="gpt-4")
     fetcher = HackernewsFetcher()
@@ -34,7 +35,6 @@ Summaries:
     return pipe
 
 
-@st.cache_data(show_spinner=True)
 def query(top_k, _pipeline):
     try:
         run_args = {"hackernews_fetcher": {"top_k": top_k}}
