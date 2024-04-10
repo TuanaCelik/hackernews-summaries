@@ -11,7 +11,7 @@ pinned: true
 
 # Hacker News Summaries
 
-### Try it out on [🤗 Spaces](https://huggingface.co/spaces/deepset/hackernews-summaries)
+### Try it out on [🤗 Spaces](https://huggingface.co/spaces/Tuana/hackernews-summaries)
 
 ##### A simple app to get summaries of some of the latest top hackernews posts
 
